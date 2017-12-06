@@ -585,3 +585,16 @@ void CO_CANinterrupt_Tx(CO_CANmodule_t *CANmodule)
         if(i == 0) CANmodule->CANtxCount = 0;
     }
 }
+
+void HAL_CAN_TxCpltCallback(CAN_HandleTypeDef* hcan)
+{
+	CO_CANinterrupt_Tx(CO->CANmodule[0]);
+}
+
+void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef* hcan)
+{
+	CO_CANinterrupt_Rx(CO->CANmodule[0]);
+	
+	/* enable CAN receive interrupts */
+	HAL_CAN_Receive_IT(hcan, CAN_FIFO0);
+}
